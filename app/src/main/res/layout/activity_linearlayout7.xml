@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <TextView
+      android:id="@+id/tv_left1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@android:color/holo_red_light"
+      android:singleLine="true"
+      android:text="1231111"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintHorizontal_chainStyle="spread"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toLeftOf="@id/tv_right"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+  <TextView
+      android:id="@+id/tv_left2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@android:color/holo_blue_light"
+      android:singleLine="true"
+      android:text="78922222222222222222"
+      android:visibility="visible"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintLeft_toRightOf="@id/tv_left1"
+      app:layout_constraintRight_toLeftOf="@id/tv_right"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+
+  <TextView
+      android:id="@+id/tv_right2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@android:color/holo_red_light"
+      android:text="test"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <TextView
+      android:id="@+id/tv_right"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@android:color/holo_green_light"
+      android:text="456"
+      android:visibility="visible"
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintLeft_toRightOf="@id/tv_left2"
+      app:layout_constraintRight_toRightOf="@id/tv_right2"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+</androidx.constraintlayout.widget.ConstraintLayout>
