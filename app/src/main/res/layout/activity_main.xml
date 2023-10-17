@@ -59,4 +59,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_test_multi_set_text2" />
 
+  <TextView
+      android:id="@+id/tv_test_fingerprint"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="指纹"
+      android:layout_marginTop="10dp"
+      android:padding="20dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tv_test_relativeLayout"
+      />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

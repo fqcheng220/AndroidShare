@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv_test_multi_set_text1;
     private TextView mTv_test_multi_set_text2;
     private TextView mTv_test_relativeLayout;
+    private TextView mTv_test_fingerprint;
 
     private Dialog mDlg;
     private View mViewDlg;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_multi_set_text1 = findViewById(R.id.tv_test_multi_set_text1);
         mTv_test_multi_set_text2 = findViewById(R.id.tv_test_multi_set_text2);
         mTv_test_relativeLayout = findViewById(R.id.tv_test_relativeLayout);
+        mTv_test_fingerprint = findViewById(R.id.tv_test_fingerprint);
 
         /**
          * 同一个布局文件，
@@ -120,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent().setClass(MainActivity.this, RelativeLayoutActivity.class));
+            }
+        });
+        mTv_test_fingerprint.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                startActivity(new Intent().setClass(MainActivity.this, FingerprintActivity.class));
             }
         });
     }
