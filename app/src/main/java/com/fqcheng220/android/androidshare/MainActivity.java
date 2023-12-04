@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv_test_multi_set_text2;
     private TextView mTv_test_relativeLayout;
     private TextView mTv_test_fingerprint;
+    private TextView mTv_test_linearyLayout;
 
     private Dialog mDlg;
     private View mViewDlg;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_multi_set_text2 = findViewById(R.id.tv_test_multi_set_text2);
         mTv_test_relativeLayout = findViewById(R.id.tv_test_relativeLayout);
         mTv_test_fingerprint = findViewById(R.id.tv_test_fingerprint);
+        mTv_test_linearyLayout = findViewById(R.id.tv_test_linearLayout);
 
         /**
          * 同一个布局文件，
@@ -129,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(MainActivity.this, FingerprintActivity.class));
             }
         });
+        mTv_test_linearyLayout.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent().setClass(MainActivity.this, LinearLayoutActivity.class));
+            }
+        });
     }
 
     private void log(String msg) {
@@ -145,5 +153,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override protected void onStart() {
+        super.onStart();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        Rect rect1 = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect1);
+        Rect rect2 = new Rect();
+        if (mDlg != null) {
+            mDlg.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect2);
+        }
+        android.util.Log.d("MainActivity","onResume");
     }
 }
