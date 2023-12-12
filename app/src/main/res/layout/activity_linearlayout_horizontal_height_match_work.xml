@@ -14,7 +14,7 @@
         <Button
             android:id="@+id/btn_neg"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:paddingLeft="15.5dp"
@@ -23,15 +23,9 @@
             android:paddingBottom="15.5dp"
             android:textColor="#444444"
             android:textSize="18dp"
-            android:text="cancel"
+            android:text="cancel1111111111111111111111111111111"
             />
 
-        <View
-            android:id="@+id/view_divider_bottom_vertical"
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:background="#cccccc"
-            />
 
         <Button
             android:id="@+id/btn_pos"

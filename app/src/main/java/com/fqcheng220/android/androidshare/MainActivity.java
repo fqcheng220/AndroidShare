@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import com.fqcheng220.android.androidshare.utils.HirearchyUtils;
 
 public class MainActivity extends AppCompatActivity {
     private Button mBtn_show_dialog;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv_test_relativeLayout;
     private TextView mTv_test_fingerprint;
     private TextView mTv_test_linearyLayout;
+    private TextView mTv_test_windowmanager;
 
     private Dialog mDlg;
     private View mViewDlg;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         mBtn_show_dialog = findViewById(R.id.btn_show_dialog);
         mBtn_show_dialog_view = findViewById(R.id.btn_show_dialog_view);
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_relativeLayout = findViewById(R.id.tv_test_relativeLayout);
         mTv_test_fingerprint = findViewById(R.id.tv_test_fingerprint);
         mTv_test_linearyLayout = findViewById(R.id.tv_test_linearLayout);
+        mTv_test_windowmanager = findViewById(R.id.tv_test_windowmanager);
 
         /**
          * 同一个布局文件，
@@ -137,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(MainActivity.this, LinearLayoutActivity.class));
             }
         });
+        mTv_test_windowmanager.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent().setClass(MainActivity.this, WindowManagerActivity.class));
+            }
+        });
     }
 
     private void log(String msg) {
@@ -167,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         if (mDlg != null) {
             mDlg.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect2);
         }
-        android.util.Log.d("MainActivity","onResume");
+        android.util.Log.d("MainActivity", "onResume");
+        HirearchyUtils.printHirearchy(getWindow());
     }
 }

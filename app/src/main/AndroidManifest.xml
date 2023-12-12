@@ -31,6 +31,7 @@
     <activity android:name=".RelativeLayoutActivity"/>
     <activity android:name=".FingerprintActivity"/>
     <activity android:name=".LinearLayoutActivity"/>
+    <activity android:name=".WindowManagerActivity"/>
   </application>
 
 </manifest>

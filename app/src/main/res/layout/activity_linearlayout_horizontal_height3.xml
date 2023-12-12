@@ -29,7 +29,7 @@
         <View
             android:id="@+id/view_divider_bottom_vertical"
             android:layout_width="1px"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#cccccc"
             />
 
