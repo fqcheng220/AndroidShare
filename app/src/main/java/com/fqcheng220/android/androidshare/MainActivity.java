@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.fqcheng220.android.androidshare.utils.HirearchyUtils;
 
+import com.fqcheng220.android.androidshare.dialog.DialogActivity;
+import com.fqcheng220.android.androidshare.utils.NavigationBarUtil;
+import com.fqcheng220.android.androidshare.utils.StatusBarUtil;
+
 public class MainActivity extends AppCompatActivity {
     private Button mBtn_show_dialog;
     private Button mBtn_show_dialog_view;
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv_test_fingerprint;
     private TextView mTv_test_linearyLayout;
     private TextView mTv_test_windowmanager;
+    private TextView mTv_test_dialog;
 
     private Dialog mDlg;
     private View mViewDlg;
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_fingerprint = findViewById(R.id.tv_test_fingerprint);
         mTv_test_linearyLayout = findViewById(R.id.tv_test_linearLayout);
         mTv_test_windowmanager = findViewById(R.id.tv_test_windowmanager);
+        mTv_test_dialog = findViewById(R.id.tv_test_dialog);
 
         /**
          * 同一个布局文件，
@@ -133,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mTv_test_fingerprint.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent().setClass(MainActivity.this, FingerprintActivity.class));
             }
         });
@@ -145,6 +153,12 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_windowmanager.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 startActivity(new Intent().setClass(MainActivity.this, WindowManagerActivity.class));
+            }
+        });
+        mTv_test_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent().setClass(MainActivity.this, DialogActivity.class));
             }
         });
     }
@@ -180,4 +194,30 @@ public class MainActivity extends AppCompatActivity {
         android.util.Log.d("MainActivity", "onResume");
         HirearchyUtils.printHirearchy(getWindow());
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        int decorViewHeight = getWindow().getDecorView().getMeasuredHeight();
+//        log("getWindow().getDecorView().getMeasuredHeight()=" + getWindow().getDecorView().getMeasuredHeight());
+//        Rect rect = new Rect();
+//        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+//        log("getWindow().getDecorView().getWindowVisibleDisplayFrame(rect)=" + rect);
+//        Display display = getWindowManager().getDefaultDisplay();
+//        log("getWindowManager().getDefaultDisplay()=" + display.getHeight());
+//        log("StatusBarUtil.getStatusBarHeight(this)=" + StatusBarUtil.getStatusBarHeight(this));
+//        log("NavigationBarUtil.getNavigationBarHeight(this)=" + NavigationBarUtil.getNavigationBarHeight(this));
+//        if (mDlg != null) {
+//            Rect windowVisibleDisplayFrame = new Rect();
+//            mDlg.getWindow().getDecorView().getWindowVisibleDisplayFrame(windowVisibleDisplayFrame);
+//            log("mDlg.getWindow().getDecorView().getWindowVisibleDisplayFrame(windowVisibleDisplayFrame)=" + windowVisibleDisplayFrame);
+//            Rect globalVisibleRect = new Rect();
+//            mDlg.getWindow().getDecorView().getGlobalVisibleRect(globalVisibleRect);
+//            int[] cor = new int[2];
+//            mDlg.getWindow().getDecorView().getLocationOnScreen(cor);
+//            log("mDlg.getWindow().getDecorView().getLocationOnScreen(cor)=" + cor);
+//            boolean result = cor[1] == (windowVisibleDisplayFrame.height() / 2 + windowVisibleDisplayFrame.top);
+//            log("result=" + result);
+//        }
+//    }
 }
