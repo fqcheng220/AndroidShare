@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv_test_linearyLayout;
     private TextView mTv_test_windowmanager;
     private TextView mTv_test_dialog;
+    private TextView mTv_test_transaction_too_large_exception;
 
     private Dialog mDlg;
     private View mViewDlg;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_linearyLayout = findViewById(R.id.tv_test_linearLayout);
         mTv_test_windowmanager = findViewById(R.id.tv_test_windowmanager);
         mTv_test_dialog = findViewById(R.id.tv_test_dialog);
+        mTv_test_transaction_too_large_exception = findViewById(R.id.tv_test_transaction_too_large_exception);
 
         /**
          * 同一个布局文件，
@@ -159,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent().setClass(MainActivity.this, DialogActivity.class));
+            }
+        });
+        mTv_test_transaction_too_large_exception.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent().setClass(MainActivity.this, TransactionTooLargeExceptionActivity.class));
             }
         });
     }

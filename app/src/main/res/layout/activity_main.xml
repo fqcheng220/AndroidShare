@@ -109,6 +109,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_test_windowmanager" />
 
+        <TextView
+            android:id="@+id/tv_test_transaction_too_large_exception"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="20dp"
+            android:text="测试android.os.TransactionTooLargeException"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_test_dialog" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
