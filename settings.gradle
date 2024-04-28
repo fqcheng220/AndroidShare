@@ -14,3 +14,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndroidShare"
 include ':app'
+include ':scope_storage'
+include ':scope_storage:libbase'
+include ':scope_storage:targetsdkversion_29'
+include ':scope_storage:targetsdkversion_28_or_lower'
+include ':scope_storage:targetsdkversion_33'

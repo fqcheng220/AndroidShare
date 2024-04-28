@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import com.fqcheng220.android.androidshare.base.COWDemo;
+import com.fqcheng220.android.androidshare.base.HashSetDemo;
 import com.fqcheng220.android.androidshare.utils.HirearchyUtils;
 
 import com.fqcheng220.android.androidshare.dialog.DialogActivity;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTv_test_windowmanager;
     private TextView mTv_test_dialog;
     private TextView mTv_test_transaction_too_large_exception;
+    private TextView mTv_test_touch_event;
 
     private Dialog mDlg;
     private View mViewDlg;
@@ -43,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HashSetDemo.main(null);
+        COWDemo cowDemo = new COWDemo();
+        cowDemo.testSortCopyOnWriteArrayList();
+        cowDemo.getTargetSdkVersion();
+        cowDemo.getTargetSdkVersion2(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         mBtn_show_dialog = findViewById(R.id.btn_show_dialog);
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mTv_test_windowmanager = findViewById(R.id.tv_test_windowmanager);
         mTv_test_dialog = findViewById(R.id.tv_test_dialog);
         mTv_test_transaction_too_large_exception = findViewById(R.id.tv_test_transaction_too_large_exception);
+        mTv_test_touch_event = findViewById(R.id.tv_test_touch_event);
 
         /**
          * 同一个布局文件，
@@ -167,6 +176,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent().setClass(MainActivity.this, TransactionTooLargeExceptionActivity.class));
+        }});
+        mTv_test_touch_event.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent().setClass(MainActivity.this, TouchEventActivity.class));
             }
         });
     }

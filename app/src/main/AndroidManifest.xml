@@ -35,6 +35,8 @@
     <activity android:name=".WindowManagerActivity"/>
     <activity android:name=".dialog.DialogActivity"/>
     <activity android:name=".TransactionTooLargeExceptionActivity"/>
+    <activity android:name=".DialogActivity"/>
+    <activity android:name=".TouchEventActivity"/>
   </application>
 
 </manifest>
