@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.fqcheng220.android.scope_storage_targetsdkversion_28_or_lower'
+    namespace 'com.fqcheng220.android.scope_storage_targetsdkversion_28r'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.fqcheng220.android.scope_storage_targetsdkversion_28_or_lower"
+        applicationId "com.fqcheng220.android.scope_storage_targetsdkversion_28"
         minSdk 24
         targetSdk 28
         versionCode 1
