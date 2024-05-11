@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import com.fqcheng220.android.androidshare.base.COWDemo;
+import com.fqcheng220.android.androidshare.base.DoubleDemo;
 import com.fqcheng220.android.androidshare.base.HashSetDemo;
 import com.fqcheng220.android.androidshare.utils.HirearchyUtils;
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DoubleDemo.main(null);
         HashSetDemo.main(null);
         COWDemo cowDemo = new COWDemo();
         cowDemo.testSortCopyOnWriteArrayList();
