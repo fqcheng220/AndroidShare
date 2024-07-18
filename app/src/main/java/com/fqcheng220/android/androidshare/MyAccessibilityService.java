@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.accessibility.AccessibilityWindowInfo;
 import android.widget.Toast;
 
 import com.fqcheng220.android.androidshare.utils.Logger;
@@ -67,7 +68,9 @@ public class MyAccessibilityService extends AccessibilityService {
                        mIsLivingRoomMonitorExpired = true;
                        return;
                    }
-                   initLivingRoom("说点什么...");
+                   traversalALlWindows();
+                   traversalAllViewAndMarkList(getRootInActiveWindow(),1);
+//                   initLivingRoom("说点什么...");
 //                   clickAndSendText("说点什么...", "发送", "5xl多大");
                    mIsLivingRoomMonitorExpired = false;
 //                   if(!mIsRunningNotifyEnterLivingRoom){
@@ -248,6 +251,31 @@ public class MyAccessibilityService extends AccessibilityService {
             }
         }
         return null;
+    }
+
+    private void traversalAllViewAndMarkList(AccessibilityNodeInfo first,final int depth) {
+        String tag = "";
+        for (int i = 0; i < depth; i++) {
+            tag += "-";
+        }
+        Logger.d(TAG, "traversalAllViewAndMarkList" + "<" + depth + ">" + tag + first);
+        if (first != null) {
+            if ("androidx.recyclerview.widget.RecyclerView".equals(first.getClassName())) {
+                Logger.d(TAG, "traversalAllViewAndMarkList RecyclerView " + "<" + depth + ">" + tag + first);
+            }
+            for (int i = 0; i < first.getChildCount(); i++) {
+                traversalAllViewAndMarkList(first.getChild(i), depth + 1);
+            }
+        }
+    }
+
+    private void traversalALlWindows(){
+        List<AccessibilityWindowInfo> windowInfos = getWindows();
+        if(windowInfos != null){
+            for(int i=0;i<windowInfos.size();i++){
+                Logger.d(TAG, "traversalALlWindows " + i + " " + windowInfos.get(i).getRoot());
+            }
+        }
     }
 
     private void printChatMsgListView(AccessibilityNodeInfo node) {
