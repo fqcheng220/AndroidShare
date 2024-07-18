@@ -28,6 +28,9 @@ public class MyAccessibilityService extends AccessibilityService {
     private boolean mIsRunningNotifyBuy = false;
     private boolean mIsRunningNotifyEnterLivingRoom = false;
     private volatile boolean mIsLivingRoomMonitorExpired = true;
+
+    //一个直播间可以复用
+    private AccessibilityNodeInfo mNodeInfoChatMsgList;
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
@@ -154,16 +157,22 @@ public class MyAccessibilityService extends AccessibilityService {
             List<AccessibilityNodeInfo> nodeInfoList = root.findAccessibilityNodeInfosByText(editTextTag);
             if(nodeInfoList != null && !nodeInfoList.isEmpty()){
                 AccessibilityNodeInfo nodeInfo = nodeInfoList.get(0);
-                if(nodeInfo != null){
+                if (nodeInfo != null) {
                     AccessibilityNodeInfo nodeInfoChatMsgList = findChatMsgListView(nodeInfo.getParent(),1);
                     if (nodeInfoChatMsgList != null) {
+                        mNodeInfoChatMsgList = nodeInfoChatMsgList;
                         Logger.d(TAG, "findChatMsgListView return " + nodeInfoChatMsgList);
                         printChatMsgListView(nodeInfoChatMsgList);
+                        return;
                     } else {
                         Logger.e(TAG, "findChatMsgListView return null");
                     }
                 }
             }
+        }
+        if (mNodeInfoChatMsgList != null) {
+            Logger.d(TAG, "initLivingRoom share mNodeInfoChatMsgList=" + mNodeInfoChatMsgList);
+            printChatMsgListView(mNodeInfoChatMsgList);
         }
     }
 
