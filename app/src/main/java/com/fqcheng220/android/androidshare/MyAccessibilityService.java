@@ -1,9 +1,13 @@
 package com.fqcheng220.android.androidshare;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.GestureDescription;
+import android.content.Intent;
+import android.graphics.Path;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
@@ -18,7 +22,7 @@ import java.util.concurrent.Executors;
 /**
  * @author fqcheng220
  * @version V1.0
- * @Description: (用一句话描述该文件做什么)
+ * @Description: (Android抖音app版本v30.6.0)
  * @date 2024/7/18 9:13
  */
 @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.DONUT)
@@ -68,8 +72,19 @@ public class MyAccessibilityService extends AccessibilityService {
                        mIsLivingRoomMonitorExpired = true;
                        return;
                    }
-                   traversalALlWindows();
-                   traversalAllViewAndMarkList(getRootInActiveWindow(),1);
+                   testDianZan();
+//                   testClickOnlineGuest();
+                   findChatMsgListViewV2(getRootInActiveWindow());
+//                   Logger.d(TAG,"traversalAllViewAndMarkList start");
+//                   traversalAllViewAndMarkList(getRootInActiveWindow(),1);
+//                   Logger.d(TAG,"traversalAllViewAndMarkList end");
+//                   try {
+//                       Thread.sleep(30*1000);
+//                   } catch (InterruptedException e) {
+//                       throw new RuntimeException(e);
+//                   }
+//                   traversalALlWindows();
+//                   traversalAllViewAndMarkList(getRootInActiveWindow(),1);
 //                   initLivingRoom("说点什么...");
 //                   clickAndSendText("说点什么...", "发送", "5xl多大");
                    mIsLivingRoomMonitorExpired = false;
@@ -143,6 +158,11 @@ public class MyAccessibilityService extends AccessibilityService {
         Logger.e(TAG,"onInterrupt");
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Logger.d(TAG,"onUnbind");
+        return super.onUnbind(intent);
+    }
 
     private boolean isInLivingRoom(String livingRoomName) {
 //        AccessibilityNodeInfo root = getRootInActiveWindow();
@@ -198,7 +218,7 @@ public class MyAccessibilityService extends AccessibilityService {
             }
         }
         try {
-            Thread.sleep(10);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -214,7 +234,7 @@ public class MyAccessibilityService extends AccessibilityService {
                     //不能使用这个
 //                nodeInfo.performAction(AccessibilityNodeInfo.ACTION_FOCUS);
 //                nodeInfo.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,arguments);
-                    AccessibilityNodeInfo nodeInfoSbliding = nodeInfo.getParent().getChild(1);
+                    AccessibilityNodeInfo nodeInfoSbliding = findFirstView(nodeInfo.getParent(),"android.widget.EditText",1);
                     nodeInfoSbliding.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT,arguments);
                 }
             }
@@ -231,6 +251,22 @@ public class MyAccessibilityService extends AccessibilityService {
 //                }
 //            }
 //        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    Logger.d(TAG,"traversalAllViewAndMarkList start");
+                    traversalAllViewAndMarkList(getRootInActiveWindow(),1);
+                    Logger.d(TAG,"traversalAllViewAndMarkList end");
+                    try {
+                        Thread.sleep(10*1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }).start();
     }
 
     private AccessibilityNodeInfo findChatMsgListView(AccessibilityNodeInfo first,final int depth) {
@@ -253,15 +289,84 @@ public class MyAccessibilityService extends AccessibilityService {
         return null;
     }
 
+    /**
+     * 直接通过id去获取聊天消息列表RecyclerView基本信息
+     * @param first
+     * @return
+     */
+    private AccessibilityNodeInfo findChatMsgListViewV2(AccessibilityNodeInfo first) {
+        if (first != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = first.findAccessibilityNodeInfosByViewId("com.ss.android.ugc.aweme:id/oyg");
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                AccessibilityNodeInfo nodeInfo = nodeInfoList.get(0);
+                Logger.d(TAG, "findChatMsgListViewV2 return " + nodeInfo);
+                return nodeInfo;
+            }
+        }
+        Logger.e(TAG, "findChatMsgListViewV2 return null");
+        return null;
+    }
+
+    private void testClickOnlineGuest(){
+        AccessibilityNodeInfo nodeInfo = findOnlineGuest(getRootInActiveWindow());
+        if(nodeInfo != null){
+            if(!nodeInfo.isClickable() && nodeInfo.getParent() != null && nodeInfo.getParent().isClickable()){
+                Logger.d(TAG,"testClickOnlineGuest cannot click,use parent instead if need");
+                nodeInfo = nodeInfo.getParent();
+            }
+            nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        }
+        //打印dialog window viewtree信息
+    }
+
+    private AccessibilityNodeInfo findOnlineGuest(AccessibilityNodeInfo first){
+        return findByViewId(first,"com.ss.android.ugc.aweme:id/osz");
+    }
+
+    private AccessibilityNodeInfo findByViewId(AccessibilityNodeInfo first,String qualifiedId) {
+        if (first != null) {
+            List<AccessibilityNodeInfo> nodeInfoList = first.findAccessibilityNodeInfosByViewId(qualifiedId);
+            if (nodeInfoList != null && !nodeInfoList.isEmpty()) {
+                AccessibilityNodeInfo nodeInfo = nodeInfoList.get(0);
+                Logger.d(TAG, "findByViewId return " + nodeInfo);
+                return nodeInfo;
+            }
+        }
+        Logger.e(TAG, "findByViewId return null");
+        return null;
+    }
+
+
+    private AccessibilityNodeInfo findFirstView(AccessibilityNodeInfo first, final String viewClzName, final int depth) {
+        if (TextUtils.isEmpty(viewClzName)) return null;
+        StringBuilder tag = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            tag.append("-");
+        }
+        Logger.d(TAG, "findFirstView" + "<" + depth + ">" + tag + first);
+        if (first != null) {
+            if (viewClzName.equals(first.getClassName())) {
+                return first;
+            }
+            for (int i = 0; i < first.getChildCount(); i++) {
+                AccessibilityNodeInfo item = findFirstView(first.getChild(i), viewClzName, depth + 1);
+                if (item != null) {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+
     private void traversalAllViewAndMarkList(AccessibilityNodeInfo first,final int depth) {
         String tag = "";
         for (int i = 0; i < depth; i++) {
-            tag += "-";
+            tag += "--";
         }
         Logger.d(TAG, "traversalAllViewAndMarkList" + "<" + depth + ">" + tag + first);
         if (first != null) {
             if ("androidx.recyclerview.widget.RecyclerView".equals(first.getClassName())) {
-                Logger.d(TAG, "traversalAllViewAndMarkList RecyclerView " + "<" + depth + ">" + tag + first);
+                Logger.d(TAG, "traversalAllViewAndMarkList RecyclerView " + tag + "<" + depth + ">" + first);
             }
             for (int i = 0; i < first.getChildCount(); i++) {
                 traversalAllViewAndMarkList(first.getChild(i), depth + 1);
@@ -275,6 +380,37 @@ public class MyAccessibilityService extends AccessibilityService {
             for(int i=0;i<windowInfos.size();i++){
                 Logger.d(TAG, "traversalALlWindows " + i + " " + windowInfos.get(i).getRoot());
             }
+        }
+    }
+
+    /**
+     * 测试连续快速点击点赞
+     */
+    private void testDianZan(){
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        for (int i = 0; i < 5; i++) {
+            clickByNode(this, displayMetrics.widthPixels / 2.0f, displayMetrics.heightPixels / 2.0f);
+        }
+    }
+
+    private static void clickByNode(AccessibilityService accessibilityService,float x,float y) {
+        if (accessibilityService != null && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            GestureDescription.Builder builder = new GestureDescription.Builder();
+            Path path = new Path();
+            path.moveTo(x, y);
+            builder.addStroke(new GestureDescription.StrokeDescription(path, 0, 1));
+            boolean bRtn = accessibilityService.dispatchGesture(builder.build(), new GestureResultCallback() {
+                @Override
+                public void onCompleted(GestureDescription gestureDescription) {
+                    Logger.d(TAG, "clickByNode onCompleted " + gestureDescription);
+                }
+
+                @Override
+                public void onCancelled(GestureDescription gestureDescription) {
+                    Logger.d(TAG, "clickByNode onCancelled " + gestureDescription);
+                }
+            }, null);
+            Logger.d(TAG, "clickByNode " + bRtn);
         }
     }
 
