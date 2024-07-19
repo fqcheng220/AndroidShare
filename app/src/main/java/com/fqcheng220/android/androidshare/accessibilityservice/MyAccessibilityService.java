@@ -1,16 +1,23 @@
-package com.fqcheng220.android.androidshare;
+package com.fqcheng220.android.androidshare.accessibilityservice;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.fqcheng220.android.androidshare.utils.Logger;
@@ -40,6 +47,7 @@ public class MyAccessibilityService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         Toast.makeText(this,"onServiceConnected",Toast.LENGTH_LONG).show();
+        showOverlayView();
     }
 
     @Override
@@ -83,7 +91,7 @@ public class MyAccessibilityService extends AccessibilityService {
 //                   } catch (InterruptedException e) {
 //                       throw new RuntimeException(e);
 //                   }
-//                   traversalALlWindows();
+                   traversalALlWindows();
 //                   traversalAllViewAndMarkList(getRootInActiveWindow(),1);
 //                   initLivingRoom("说点什么...");
 //                   clickAndSendText("说点什么...", "发送", "5xl多大");
@@ -442,5 +450,47 @@ public class MyAccessibilityService extends AccessibilityService {
             }
         }
         return "";
+    }
+
+    /**
+     * 显示悬浮窗
+     */
+    private void showOverlayView() {
+        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        ViewGroup viewGroup = new FrameLayout(this);
+        viewGroup.setBackgroundColor(Color.RED);
+        viewGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyAccessibilityService.this, "onClick", Toast.LENGTH_LONG).show();
+            }
+        });
+        /**
+         * 错误示范
+         * 经常犯的错误，以为{@link WindowManager.LayoutParams(int _type, int _flags)}带两个整型参数构造函数的两个参数是宽度和高度，其实是type和flags
+         * 这段代码执行完后，layoutParams.flags异常
+         */
+//        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        layoutParams.width = 200;
+//        layoutParams.height = 200;
+//        layoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+//        layoutParams.format = PixelFormat.TRANSLUCENT;
+//        layoutParams.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN
+//                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+//                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        /**
+         * 正确示范
+         */
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.width = 200;
+        layoutParams.height = 200;
+        layoutParams.type = WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+        layoutParams.format = PixelFormat.TRANSLUCENT;
+        layoutParams.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        windowManager.addView(viewGroup, layoutParams);
     }
 }
