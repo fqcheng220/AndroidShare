@@ -21,6 +21,7 @@ import android.os.Bundle;
 import com.fqcheng220.android.androidshare.base.COWDemo;
 import com.fqcheng220.android.androidshare.base.DoubleDemo;
 import com.fqcheng220.android.androidshare.base.HashSetDemo;
+import com.fqcheng220.android.androidshare.base.android.SharedPreferenceDemo;
 import com.fqcheng220.android.androidshare.utils.HirearchyUtils;
 
 import com.fqcheng220.android.androidshare.dialog.DialogActivity;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         cowDemo.testSortCopyOnWriteArrayList();
         cowDemo.getTargetSdkVersion();
         cowDemo.getTargetSdkVersion2(this);
+        SharedPreferenceDemo.test(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         mBtn_show_dialog = findViewById(R.id.btn_show_dialog);
